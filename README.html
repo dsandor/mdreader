@@ -299,7 +299,193 @@
     <div class="markdown-body">
         <h1 id="md-reader">MD Reader</h1>
 
-<p>The purpose of this project is to provide a command line utility in golang that will take a markdown file as input and output an html file that is formatted and styled like github styled markdown including full syntax highlighting.</p>
+<p>A command-line utility that converts Markdown files to beautifully formatted HTML with GitHub-style rendering and syntax highlighting.</p>
+
+<h2 id="features">Features</h2>
+
+<ul>
+<li>GitHub-style markdown rendering</li>
+<li>Syntax highlighting for code blocks</li>
+<li>Support for tables, blockquotes, and all standard markdown elements</li>
+<li>Optional browser launching after conversion</li>
+<li>Clean, responsive HTML output</li>
+<li><strong>Interactive UI mode</strong> with split-pane editor and live preview</li>
+</ul>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="from-source">From Source</h3>
+
+<p>Requires Go 1.20 or higher.</p>
+<pre class="chroma"><code><span class="line"><span class="cl">git clone https://github.com/dsandor/mdreader.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> mdreader
+</span></span><span class="line"><span class="cl">go build -o mdreader
+</span></span></code></pre>
+<h3 id="quick-start">Quick Start</h3>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="c1"># Build the tool</span>
+</span></span><span class="line"><span class="cl">go build -o mdreader
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Convert a markdown file</span>
+</span></span><span class="line"><span class="cl">./mdreader README.md
+</span></span></code></pre>
+<h2 id="usage">Usage</h2>
+
+<h3 id="basic-usage">Basic Usage</h3>
+
+<p>Convert a markdown file to HTML:</p>
+<pre class="chroma"><code><span class="line"><span class="cl">mdreader &lt;input.md&gt;
+</span></span></code></pre>
+<p>This creates an HTML file with the same name as your input file (e.g., <code>input.md</code> → <code>input.html</code>).</p>
+
+<h3 id="command-line-options">Command-Line Options</h3>
+
+<h4 id="input-file">Input File</h4>
+
+<p>Specify the markdown file to convert. Can be provided as a positional argument or with the <code>--input</code> flag:</p>
+<pre class="chroma"><code><span class="line"><span class="cl">mdreader document.md
+</span></span><span class="line"><span class="cl"><span class="c1"># or</span>
+</span></span><span class="line"><span class="cl">mdreader --input document.md
+</span></span></code></pre>
+<h4 id="output-file-output">Output File (<code>--output</code>)</h4>
+
+<p>Specify a custom name for the output HTML file:</p>
+<pre class="chroma"><code><span class="line"><span class="cl">mdreader document.md --output custom-name.html
+</span></span></code></pre>
+<p>If not specified, the output file will have the same base name as the input file with an <code>.html</code> extension.</p>
+
+<h4 id="launch-browser-launch">Launch Browser (<code>--launch</code>)</h4>
+
+<p>Automatically open the generated HTML file in your default web browser:</p>
+<pre class="chroma"><code><span class="line"><span class="cl">mdreader document.md --launch
+</span></span></code></pre>
+<h4 id="interactive-ui-mode-ui">Interactive UI Mode (<code>--ui</code>)</h4>
+
+<p>Launch an interactive markdown editor with live preview in your web browser:</p>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="c1"># Start UI with empty editor</span>
+</span></span><span class="line"><span class="cl">mdreader --ui
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Start UI with a file loaded</span>
+</span></span><span class="line"><span class="cl">mdreader --ui document.md
+</span></span></code></pre>
+<p>The UI mode provides:
+- <strong>Split-pane interface</strong>: Markdown editor on the left, live preview on the right
+- <strong>Real-time preview</strong>: See changes as you type
+- <strong>File operations</strong>: New, Open, Save, Save As
+- <strong>Export to HTML</strong>: Export the rendered HTML to a file
+- <strong>Keyboard shortcuts</strong>:
+  - <code>Ctrl/Cmd + S</code>: Save file
+  - <code>Ctrl/Cmd + Shift + S</code>: Save As
+  - <code>Ctrl/Cmd + O</code>: Open file
+  - <code>Ctrl/Cmd + N</code>: New file
+- <strong>Resizable panes</strong>: Drag the divider to adjust editor/preview sizes
+- <strong>Syntax highlighting</strong> in the preview pane
+- <strong>Line and column position</strong> tracking</p>
+
+<h3 id="examples">Examples</h3>
+
+<h4 id="simple-conversion">Simple Conversion</h4>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="c1"># Convert README.md to README.html</span>
+</span></span><span class="line"><span class="cl">mdreader README.md
+</span></span></code></pre>
+<h4 id="custom-output-name">Custom Output Name</h4>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="c1"># Convert notes.md to documentation.html</span>
+</span></span><span class="line"><span class="cl">mdreader notes.md --output documentation.html
+</span></span></code></pre>
+<h4 id="convert-and-view">Convert and View</h4>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="c1"># Convert and immediately open in browser</span>
+</span></span><span class="line"><span class="cl">mdreader README.md --launch
+</span></span></code></pre>
+<h4 id="interactive-editing">Interactive Editing</h4>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="c1"># Launch the UI editor</span>
+</span></span><span class="line"><span class="cl">mdreader --ui
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Edit an existing file in the UI</span>
+</span></span><span class="line"><span class="cl">mdreader --ui README.md
+</span></span></code></pre>
+<h4 id="full-options">Full Options</h4>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="c1"># Use all options together (for CLI mode)</span>
+</span></span><span class="line"><span class="cl">mdreader --input notes.md --output final-doc.html --launch
+</span></span></code></pre>
+<h2 id="supported-markdown-features">Supported Markdown Features</h2>
+
+<ul>
+<li><strong>Headers</strong> (H1-H6)</li>
+<li><strong>Text formatting</strong>: bold, italic, strikethrough</li>
+<li><strong>Lists</strong>: ordered and unordered, nested lists</li>
+<li><strong>Links and images</strong></li>
+<li><strong>Code blocks</strong> with syntax highlighting for popular languages:
+
+<ul>
+<li>Go, Python, JavaScript, TypeScript, Java, C/C++, Rust</li>
+<li>HTML, CSS, JSON, YAML, SQL</li>
+<li>Shell/Bash scripts</li>
+<li>And many more&hellip;</li>
+</ul></li>
+<li><strong>Tables</strong> with GitHub-style formatting</li>
+<li><strong>Blockquotes</strong></li>
+<li><strong>Horizontal rules</strong></li>
+<li><strong>Inline code</strong></li>
+</ul>
+
+<h2 id="output">Output</h2>
+
+<p>The generated HTML includes:</p>
+
+<ul>
+<li>Embedded GitHub-style CSS</li>
+<li>Syntax highlighting styles</li>
+<li>Responsive design that works on desktop and mobile</li>
+<li>Self-contained file (no external dependencies)</li>
+</ul>
+
+<h2 id="examples-of-supported-languages">Examples of Supported Languages</h2>
+
+<p>The syntax highlighter automatically detects and highlights code blocks:</p>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="s">```go
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="kd">func</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Hello, World!&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```python
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sa">f</span><span class="s2">&#34;Hello, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```javascript
+</span></span></span><span class="line"><span class="cl"><span class="s"></span><span class="kr">const</span> <span class="nx">greet</span> <span class="o">=</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sb">`Hello, </span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb">!`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span></code></pre>
+<h2 id="building-from-source">Building from Source</h2>
+<pre class="chroma"><code><span class="line"><span class="cl"><span class="c1"># Clone the repository</span>
+</span></span><span class="line"><span class="cl">git clone https://github.com/dsandor/mdreader.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> mdreader
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Install dependencies</span>
+</span></span><span class="line"><span class="cl">go mod download
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Build the binary</span>
+</span></span><span class="line"><span class="cl">go build -o mdreader
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Optional: Install to PATH</span>
+</span></span><span class="line"><span class="cl">go install
+</span></span></code></pre>
+<h2 id="requirements">Requirements</h2>
+
+<ul>
+<li>Go 1.20 or higher (for building from source)</li>
+<li>A modern web browser (for viewing the HTML output)</li>
+</ul>
+
+<h2 id="license">License</h2>
+
+<p>[Add your license information here]</p>
+
+<h2 id="contributing">Contributing</h2>
+
+<p>[Add contribution guidelines if applicable]</p>
 
     </div>
 </body>

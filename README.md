@@ -9,6 +9,7 @@ A command-line utility that converts Markdown files to beautifully formatted HTM
 - Support for tables, blockquotes, and all standard markdown elements
 - Optional browser launching after conversion
 - Clean, responsive HTML output
+- **Interactive UI mode** with split-pane editor and live preview
 
 ## Installation
 
@@ -74,6 +75,32 @@ Automatically open the generated HTML file in your default web browser:
 mdreader document.md --launch
 ```
 
+#### Interactive UI Mode (`--ui`)
+
+Launch an interactive markdown editor with live preview in your web browser:
+
+```bash
+# Start UI with empty editor
+mdreader --ui
+
+# Start UI with a file loaded
+mdreader --ui document.md
+```
+
+The UI mode provides:
+- **Split-pane interface**: Markdown editor on the left, live preview on the right
+- **Real-time preview**: See changes as you type
+- **File operations**: New, Open, Save, Save As
+- **Export to HTML**: Export the rendered HTML to a file
+- **Keyboard shortcuts**:
+  - `Ctrl/Cmd + S`: Save file
+  - `Ctrl/Cmd + Shift + S`: Save As
+  - `Ctrl/Cmd + O`: Open file
+  - `Ctrl/Cmd + N`: New file
+- **Resizable panes**: Drag the divider to adjust editor/preview sizes
+- **Syntax highlighting** in the preview pane
+- **Line and column position** tracking
+
 ### Examples
 
 #### Simple Conversion
@@ -94,9 +121,18 @@ mdreader notes.md --output documentation.html
 mdreader README.md --launch
 ```
 
+#### Interactive Editing
+```bash
+# Launch the UI editor
+mdreader --ui
+
+# Edit an existing file in the UI
+mdreader --ui README.md
+```
+
 #### Full Options
 ```bash
-# Use all options together
+# Use all options together (for CLI mode)
 mdreader --input notes.md --output final-doc.html --launch
 ```
 

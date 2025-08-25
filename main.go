@@ -23,11 +23,22 @@ func main() {
 	var inputFile string
 	var outputFile string
 	var launch bool
+	var ui bool
 
 	flag.StringVar(&inputFile, "input", "", "Input markdown file")
 	flag.StringVar(&outputFile, "output", "", "Output HTML file (optional)")
 	flag.BoolVar(&launch, "launch", false, "Launch HTML file in default browser")
+	flag.BoolVar(&ui, "ui", false, "Launch interactive UI editor")
 	flag.Parse()
+
+	if ui {
+		// UI mode - can optionally load a file
+		if inputFile == "" && flag.NArg() > 0 {
+			inputFile = flag.Arg(0)
+		}
+		runUI(inputFile)
+		return
+	}
 
 	if inputFile == "" && flag.NArg() > 0 {
 		inputFile = flag.Arg(0)
@@ -36,6 +47,7 @@ func main() {
 	if inputFile == "" {
 		fmt.Println("Usage: mdreader <input.md> [--output <output.html>] [--launch]")
 		fmt.Println("       mdreader --input <input.md> [--output <output.html>] [--launch]")
+		fmt.Println("       mdreader --ui [input.md]  # Launch interactive editor")
 		os.Exit(1)
 	}
 
@@ -67,9 +79,7 @@ func main() {
 }
 
 func convertMarkdownToHTML(markdown []byte) string {
-	renderer := NewCustomHTMLRenderer()
-	extensions := blackfriday.CommonExtensions | blackfriday.AutoHeadingIDs | blackfriday.FencedCode | blackfriday.Tables
-	body := blackfriday.Run(markdown, blackfriday.WithRenderer(renderer), blackfriday.WithExtensions(extensions))
+	body := convertMarkdownToHTMLBody(markdown)
 
 	html := fmt.Sprintf(`<!DOCTYPE html>
 <html>
@@ -87,7 +97,38 @@ func convertMarkdownToHTML(markdown []byte) string {
         %s
     </div>
 </body>
-</html>`, getGithubCSS(), getChromaCSS(), string(body))
+</html>`, getGithubCSS(), getChromaCSS(), body)
+
+	return html
+}
+
+func convertMarkdownToHTMLBody(markdown []byte) string {
+	renderer := NewCustomHTMLRenderer()
+	extensions := blackfriday.CommonExtensions | blackfriday.AutoHeadingIDs | blackfriday.FencedCode | blackfriday.Tables
+	body := blackfriday.Run(markdown, blackfriday.WithRenderer(renderer), blackfriday.WithExtensions(extensions))
+	return string(body)
+}
+
+func convertMarkdownToHTMLForUI(markdown []byte) string {
+	body := convertMarkdownToHTMLBody(markdown)
+
+	html := fmt.Sprintf(`<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Preview</title>
+    <style>
+        %s
+        %s
+    </style>
+</head>
+<body>
+    <div class="markdown-body">
+        %s
+    </div>
+</body>
+</html>`, getGithubCSS(), getChromaCSS(), body)
 
 	return html
 }
