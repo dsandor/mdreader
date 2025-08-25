@@ -366,6 +366,8 @@ func generateUIHTML(initialContent string) string {
         <div class="separator"></div>
         <button onclick="exportHTML()">Export HTML</button>
         <div class="separator"></div>
+        <button id="scroll-sync-btn" onclick="toggleScrollSync()" title="Toggle scroll synchronization">🔗 Sync</button>
+        <div class="separator"></div>
         <input type="text" id="current-file" placeholder="Untitled.md" value="Untitled.md">
     </div>
 
@@ -435,6 +437,10 @@ func generateUIHTML(initialContent string) string {
                 if (msg.type === 'preview') {
                     preview.srcdoc = msg.content;
                     statusText.textContent = 'Preview updated';
+                    // Set up reverse scroll sync after content loads
+                    setTimeout(() => {
+                        setupReverseScrollSync();
+                    }, 100);
                 }
             };
 
@@ -471,6 +477,54 @@ func generateUIHTML(initialContent string) string {
         editor.addEventListener('click', updateCursorPosition);
         editor.addEventListener('keyup', updateCursorPosition);
 
+        // Synchronized scrolling
+        let isScrollSyncEnabled = true;
+        let isScrolling = false;
+
+        editor.addEventListener('scroll', () => {
+            if (!isScrollSyncEnabled || isScrolling) return;
+            isScrolling = true;
+            
+            // Calculate scroll percentage of editor
+            const scrollTop = editor.scrollTop;
+            const scrollHeight = editor.scrollHeight - editor.clientHeight;
+            const scrollPercent = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+            
+            // Apply same scroll percentage to preview
+            const previewDoc = preview.contentDocument || preview.contentWindow.document;
+            if (previewDoc && previewDoc.documentElement) {
+                const previewScrollHeight = previewDoc.documentElement.scrollHeight - previewDoc.documentElement.clientHeight;
+                const targetScrollTop = previewScrollHeight * scrollPercent;
+                previewDoc.documentElement.scrollTop = targetScrollTop;
+            }
+            
+            setTimeout(() => { isScrolling = false; }, 50);
+        });
+
+        // Optional: Add reverse sync (preview to editor) - can be enabled/disabled
+        function setupReverseScrollSync() {
+            const previewDoc = preview.contentDocument || preview.contentWindow.document;
+            if (previewDoc) {
+                previewDoc.addEventListener('scroll', () => {
+                    if (!isScrollSyncEnabled || isScrolling) return;
+                    isScrolling = true;
+                    
+                    const scrollTop = previewDoc.documentElement.scrollTop;
+                    const scrollHeight = previewDoc.documentElement.scrollHeight - previewDoc.documentElement.clientHeight;
+                    const scrollPercent = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+                    
+                    const editorScrollHeight = editor.scrollHeight - editor.clientHeight;
+                    const targetScrollTop = editorScrollHeight * scrollPercent;
+                    editor.scrollTop = targetScrollTop;
+                    
+                    setTimeout(() => { isScrolling = false; }, 50);
+                });
+            }
+        }
+
+        // Set up reverse scroll sync after preview loads
+        preview.addEventListener('load', setupReverseScrollSync);
+
         // Handle tab key
         editor.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
@@ -489,6 +543,20 @@ func generateUIHTML(initialContent string) string {
                     type: 'convert',
                     content: editor.value
                 }));
+            }
+        }
+
+        function toggleScrollSync() {
+            isScrollSyncEnabled = !isScrollSyncEnabled;
+            const btn = document.getElementById('scroll-sync-btn');
+            if (isScrollSyncEnabled) {
+                btn.textContent = '🔗 Sync';
+                btn.style.background = '#0e639c';
+                statusText.textContent = 'Scroll sync enabled';
+            } else {
+                btn.textContent = '🔓 Sync';
+                btn.style.background = '#666';
+                statusText.textContent = 'Scroll sync disabled';
             }
         }
 
@@ -692,6 +760,10 @@ func generateUIHTML(initialContent string) string {
                     case 'n':
                         e.preventDefault();
                         newFile();
+                        break;
+                    case 'y':
+                        e.preventDefault();
+                        toggleScrollSync();
                         break;
                 }
             }
