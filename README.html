@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Preview</title>
+    <style>
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292e;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+
+        .markdown-body h1 {
+            padding-bottom: 0.3em;
+            font-size: 2em;
+            border-bottom: 1px solid #eaecef;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .markdown-body h2 {
+            padding-bottom: 0.3em;
+            font-size: 1.5em;
+            border-bottom: 1px solid #eaecef;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .markdown-body h3 {
+            font-size: 1.25em;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .markdown-body h4 {
+            font-size: 1em;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .markdown-body h5 {
+            font-size: 0.875em;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .markdown-body h6 {
+            font-size: 0.85em;
+            color: #6a737d;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .markdown-body p {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body blockquote {
+            margin: 0;
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body ul,
+        .markdown-body ol {
+            margin-top: 0;
+            margin-bottom: 16px;
+            padding-left: 2em;
+        }
+
+        .markdown-body ul ul,
+        .markdown-body ul ol,
+        .markdown-body ol ol,
+        .markdown-body ol ul {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .markdown-body li {
+            word-wrap: break-all;
+        }
+
+        .markdown-body li > p {
+            margin-top: 16px;
+        }
+
+        .markdown-body li + li {
+            margin-top: 0.25em;
+        }
+
+        .markdown-body code {
+            padding: 0.2em 0.4em;
+            margin: 0;
+            font-size: 85%;
+            background-color: rgba(27,31,35,0.05);
+            border-radius: 3px;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+        }
+
+        .markdown-body pre {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 85%;
+            line-height: 1.45;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            overflow: auto;
+            padding: 16px;
+        }
+
+        .markdown-body pre code {
+            padding: 0;
+            margin: 0;
+            font-size: 100%;
+            word-break: normal;
+            white-space: pre;
+            background: transparent;
+            border: 0;
+        }
+
+        .markdown-body table {
+            border-spacing: 0;
+            border-collapse: collapse;
+            margin-top: 0;
+            margin-bottom: 16px;
+            display: block;
+            width: 100%;
+            overflow: auto;
+        }
+
+        .markdown-body table th {
+            font-weight: 600;
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+            background-color: #f6f8fa;
+        }
+
+        .markdown-body table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+
+        .markdown-body table tr {
+            background-color: #fff;
+            border-top: 1px solid #c6cbd1;
+        }
+
+        .markdown-body table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+
+        .markdown-body hr {
+            height: 0.25em;
+            padding: 0;
+            margin: 24px 0;
+            background-color: #e1e4e8;
+            border: 0;
+        }
+
+        .markdown-body a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-body img {
+            max-width: 100%;
+            box-sizing: content-box;
+            background-color: #fff;
+        }
+
+        .markdown-body strong {
+            font-weight: 600;
+        }
+
+        .markdown-body em {
+            font-style: italic;
+        }
+
+        .markdown-body del {
+            text-decoration: line-through;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+    
+        /* Background */ .bg { background-color: #ffffff; }
+/* PreWrapper */ .chroma { background-color: #ffffff; }
+/* Error */ .chroma .err { color: #f6f8fa; background-color: #82071e }
+/* LineLink */ .chroma .lnlinks { outline: none; text-decoration: none; color: inherit }
+/* LineTableTD */ .chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
+/* LineTable */ .chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
+/* LineHighlight */ .chroma .hl { background-color: #e5e5e5 }
+/* LineNumbersTable */ .chroma .lnt { white-space: pre; -webkit-user-select: none; user-select: none; margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #7f7f7f }
+/* LineNumbers */ .chroma .ln { white-space: pre; -webkit-user-select: none; user-select: none; margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #7f7f7f }
+/* Line */ .chroma .line { display: flex; }
+/* Keyword */ .chroma .k { color: #cf222e }
+/* KeywordConstant */ .chroma .kc { color: #cf222e }
+/* KeywordDeclaration */ .chroma .kd { color: #cf222e }
+/* KeywordNamespace */ .chroma .kn { color: #cf222e }
+/* KeywordPseudo */ .chroma .kp { color: #cf222e }
+/* KeywordReserved */ .chroma .kr { color: #cf222e }
+/* KeywordType */ .chroma .kt { color: #cf222e }
+/* NameAttribute */ .chroma .na { color: #1f2328 }
+/* NameClass */ .chroma .nc { color: #1f2328 }
+/* NameConstant */ .chroma .no { color: #0550ae }
+/* NameDecorator */ .chroma .nd { color: #0550ae }
+/* NameEntity */ .chroma .ni { color: #6639ba }
+/* NameLabel */ .chroma .nl { color: #990000; font-weight: bold }
+/* NameNamespace */ .chroma .nn { color: #24292e }
+/* NameOther */ .chroma .nx { color: #1f2328 }
+/* NameTag */ .chroma .nt { color: #0550ae }
+/* NameBuiltin */ .chroma .nb { color: #6639ba }
+/* NameBuiltinPseudo */ .chroma .bp { color: #6a737d }
+/* NameVariable */ .chroma .nv { color: #953800 }
+/* NameVariableClass */ .chroma .vc { color: #953800 }
+/* NameVariableGlobal */ .chroma .vg { color: #953800 }
+/* NameVariableInstance */ .chroma .vi { color: #953800 }
+/* NameVariableMagic */ .chroma .vm { color: #953800 }
+/* NameFunction */ .chroma .nf { color: #6639ba }
+/* NameFunctionMagic */ .chroma .fm { color: #6639ba }
+/* LiteralString */ .chroma .s { color: #0a3069 }
+/* LiteralStringAffix */ .chroma .sa { color: #0a3069 }
+/* LiteralStringBacktick */ .chroma .sb { color: #0a3069 }
+/* LiteralStringChar */ .chroma .sc { color: #0a3069 }
+/* LiteralStringDelimiter */ .chroma .dl { color: #0a3069 }
+/* LiteralStringDoc */ .chroma .sd { color: #0a3069 }
+/* LiteralStringDouble */ .chroma .s2 { color: #0a3069 }
+/* LiteralStringEscape */ .chroma .se { color: #0a3069 }
+/* LiteralStringHeredoc */ .chroma .sh { color: #0a3069 }
+/* LiteralStringInterpol */ .chroma .si { color: #0a3069 }
+/* LiteralStringOther */ .chroma .sx { color: #0a3069 }
+/* LiteralStringRegex */ .chroma .sr { color: #0a3069 }
+/* LiteralStringSingle */ .chroma .s1 { color: #0a3069 }
+/* LiteralStringSymbol */ .chroma .ss { color: #032f62 }
+/* LiteralNumber */ .chroma .m { color: #0550ae }
+/* LiteralNumberBin */ .chroma .mb { color: #0550ae }
+/* LiteralNumberFloat */ .chroma .mf { color: #0550ae }
+/* LiteralNumberHex */ .chroma .mh { color: #0550ae }
+/* LiteralNumberInteger */ .chroma .mi { color: #0550ae }
+/* LiteralNumberIntegerLong */ .chroma .il { color: #0550ae }
+/* LiteralNumberOct */ .chroma .mo { color: #0550ae }
+/* Operator */ .chroma .o { color: #0550ae }
+/* OperatorWord */ .chroma .ow { color: #0550ae }
+/* Punctuation */ .chroma .p { color: #1f2328 }
+/* Comment */ .chroma .c { color: #57606a }
+/* CommentHashbang */ .chroma .ch { color: #57606a }
+/* CommentMultiline */ .chroma .cm { color: #57606a }
+/* CommentSingle */ .chroma .c1 { color: #57606a }
+/* CommentSpecial */ .chroma .cs { color: #57606a }
+/* CommentPreproc */ .chroma .cp { color: #57606a }
+/* CommentPreprocFile */ .chroma .cpf { color: #57606a }
+/* GenericDeleted */ .chroma .gd { color: #82071e; background-color: #ffebe9 }
+/* GenericEmph */ .chroma .ge { color: #1f2328 }
+/* GenericInserted */ .chroma .gi { color: #116329; background-color: #dafbe1 }
+/* GenericOutput */ .chroma .go { color: #1f2328 }
+/* GenericUnderline */ .chroma .gl { text-decoration: underline }
+/* TextWhitespace */ .chroma .w { color: #ffffff }
+
+    </style>
+</head>
+<body>
+    <div class="markdown-body">
+        <h1 id="md-reader">MD Reader</h1>
+
+<p>The purpose of this project is to provide a command line utility in golang that will take a markdown file as input and output an html file that is formatted and styled like github styled markdown including full syntax highlighting.</p>
+
+    </div>
+</body>
+</html>
